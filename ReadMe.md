@@ -121,7 +121,7 @@ skillgap-ai/
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/your-username/skillgap-ai.git
+git clone https://github.com/DarshilGevariya/skillgap-ai.git
 cd skillgap-ai
 ```
 
@@ -140,7 +140,7 @@ pip install -r requirements.txt
 Create `.env` file:
 
 ```env
-OPENAI_API_KEY=your_api_key_here
+OPENAI_API_KEY=api_key_here
 ```
 
 ---
