@@ -5,7 +5,7 @@ import json
 if "scores" not in st.session_state:
     st.session_state["scores"] = {}
 
-API_URL = "http://127.0.0.1:8000"
+API_URL = "https://skillgap-ai-pozg.onrender.com"
 
 st.title("SkillGap AI")
 
