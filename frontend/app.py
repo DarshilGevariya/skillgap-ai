@@ -26,40 +26,46 @@ if uploaded_file is not None:
     if uploaded_file.name != st.session_state["last_uploaded_file"]:
 
         with st.spinner("Processing resume..."):
+            try:
+                    requests.get(API_URL, timeout=30)
+            except:
+                pass
 
-    # 🔥 Wake up Render backend
-    try:
-        requests.get(API_URL, timeout=30)
-    except:
-        pass
 
-    import time
-    time.sleep(5)
 
-    try:
-        res = requests.post(
-            f"{API_URL}/upload-resume",
-            files={
-                "file": (
-                    uploaded_file.name,
-                    uploaded_file.getvalue(),
-                    uploaded_file.type
+            import time
+            time.sleep(5)
+
+            try:
+                res = requests.post(
+                    f"{API_URL}/upload-resume",
+                    files={
+                        "file": (
+                            uploaded_file.name,
+                            uploaded_file.getvalue(),
+                            uploaded_file.type
+                        )
+                    },
+                    timeout=180
                 )
-            },
-            timeout=180
-        )
+                st.write("STATUS:", res.status_code)   # 👈 ADD THIS
+                st.write("RAW:", res.text[:500])
 
-        res = res.json()
+                res = res.json()
+                if "resume_text" in res:
+                    st.session_state["resume_text"] = res["resume_text"]
+                    st.session_state["last_uploaded_file"] = uploaded_file.name
 
-    except Exception as e:
-        st.error(f"Backend error: {e}")
-        res = {}
-        if "resume_text" in res:
-            st.session_state["resume_text"] = res["resume_text"]
-            st.session_state["last_uploaded_file"] = uploaded_file.name
+                    st.success("Resume processed successfully!")
 
-            st.success("Resume processed successfully!")
+            except requests.exceptions.Timeout:
+                st.error("Backend took too long (cold start). Try again in 30 seconds.")
+                res = {}
 
+            except Exception as e:
+                st.error(f"Backend error: {e}")
+                res = {}
+                
 
 if "resume_skills" in st.session_state:
     st.markdown("### Extracted Skills")
