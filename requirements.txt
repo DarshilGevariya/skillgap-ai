@@ -7,3 +7,4 @@ PyPDF2
 pydantic
 python-docx
 requests
+python-multipart
