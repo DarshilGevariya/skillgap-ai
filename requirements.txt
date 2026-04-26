@@ -3,4 +3,5 @@ uvicorn
 openai
 python-dotenv
 streamlit
+PyPDF2
 pydantic
